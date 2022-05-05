@@ -1,12 +1,12 @@
 const base_url = 'http://localhost:3000/api/';
 const product_url = base_url + 'products';
 
-const product_list = document.querySelector('#items');
+const product_list = document.querySelector('#items')
 
 fetch(product_url)
     .then(response => response.json())
     .then(data => {
-        console.log(data);
+        console.table(data);
         for (let d of data) {
             let product = document.createElement('a');
             product.href = `./product.html?id=${d._id}`
@@ -22,3 +22,4 @@ fetch(product_url)
         }
 
     });
+
