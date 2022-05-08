@@ -19,6 +19,11 @@ fetch(product_url).then(response => response.json())
 
         // On vérifie que l'id existe
         h === undefined ? alert('Le produit n\'existe pas ou la page a été supprimée.') : null;
+    // On vérifie que l'id existe
+    if (h === undefined) {
+      const ErrMessageInContent = document.querySelector('.item__content');
+      ErrMessageInContent.innerHTML = '<h1>Le produit n\'existe pas ou la page a été supprimée.</h1>';
+    }
 
         // Récupère les ID pour par la suite les afficher à sa bonne place
         const name_item = document.querySelector('#title');
