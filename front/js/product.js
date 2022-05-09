@@ -50,6 +50,32 @@ fetch(product_url).then(response => response.json())
       colors_item.add(colors_product);
     }
 
+    // Différentes fonctions pour ajouter/supprimer un produit au panier
+    function CheckIfCartIsEmpty(product) {
+      let TotalProductsCart;
+      // On initie le panier dans le localStorage s'il est vide
+      if (localStorage.getItem('TotalProductsCart') === null) {
+        console.info('Le panier n\'existe pas encore. Création du panier.');
+        // On ajoute le premier Item dans le panier
+        let FirstItemOnCart = JSON.stringify(product);
+        localStorage.setItem('TotalProductsCart', FirstItemOnCart);
+      } else {
+        // On ajoute le produit au panier
+        TotalProductsCart = JSON.parse(localStorage.getItem('TotalProductsCart'));
+        localStorage.setItem('TotalProductsCart', JSON.stringify(TotalProductsCart));
+      }
+    }
+    function AddItem(id, name, quantity, color) {
+      // Ajoute le produit au panier
+      let ComposeItemCart = {
+        id: id,
+        name: name,
+        quantity: quantity,
+        color: color
+      };
+      CheckIfCartIsEmpty(ComposeItemCart);
+    }
+
     // Le bouton 'Ajouter au panier'
     const addToCart = document.querySelector('#addToCart');
     addToCart.addEventListener('click', (key, value) => {
@@ -57,31 +83,12 @@ fetch(product_url).then(response => response.json())
       // Récupère la quantité choisie par l'utilisateur
       // En vérifiant si c'est compris entre 1 et 100 et non vide
       const quantity_item = document.querySelector('#quantity');
-      let TotalProductsCart;
+      let quantity = quantity_item.value;
+      let color = colors_item.value;
+
       if (colors_item.value !== '') {
         if ((quantity_item.value >= 1) && (quantity_item.value <= 100)) {
-          let quantity = quantity_item.value;
-          let color = colors_item.value;
-
-          // On enregistre le produit et son composant comme le nombre et la couleur
-          let ComposeItemCart = {
-            id: h._id,
-            name: h.name,
-            quantity: quantity,
-            color: color
-          };
-          // On initie le panier dans le localStorage s'il est vide
-          if (localStorage.getItem('TotalProductsCart') === null) {
-            console.info('Le panier n\'existe pas encore. Création du panier.');
-            // On ajoute le premier Item dans le panier
-            let FirstItemOnCart = JSON.stringify(ComposeItemCart);
-            localStorage.setItem('TotalProductsCart', FirstItemOnCart);
-          } else {
-            // On ajoute le produit au panier
-            TotalProductsCart = JSON.parse(localStorage.getItem('TotalProductsCart'));
-            localStorage.setItem('TotalProductsCart', JSON.stringify(TotalProductsCart));
-          }
-
+          AddItem(h._id, h.name, quantity, color);
         } else {
           alert('S\'il vous plait, entrez une quantité valide entre 1 et 100');
         }
