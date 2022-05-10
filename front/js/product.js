@@ -51,10 +51,16 @@ fetch(product_url).then(response => response.json())
 
     // Différentes fonctions pour ajouter/supprimer un produit au panier
     function CheckIfCartIsEmpty(product) {
+      let TotalProductsCart = JSON.parse(localStorage.getItem('TotalProductsCart'));
       // On initie le panier dans le localStorage s'il est vide
+      if (TotalProductsCart === null) {
         // On ajoute le premier Item dans le panier
+        TotalProductsCart = [];
       }
+      TotalProductsCart.push(product);
+      localStorage.setItem('TotalProductsCart', JSON.stringify(TotalProductsCart));
     }
+
     function AddItem(id, name, quantity, color) {
       // Ajoute le produit au panier
       let ComposeItemCart = {
@@ -78,6 +84,7 @@ fetch(product_url).then(response => response.json())
 
       if (colors_item.value !== '') {
         if ((quantity_item.value >= 1) && (quantity_item.value <= 100)) {
+          AddItem(product._id, product.name, quantity, color);
         } else {
           alert('S\'il vous plait, entrez une quantité valide entre 1 et 100');
         }
