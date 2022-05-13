@@ -49,7 +49,33 @@ fetch(product_url).then(response => response.json())
       colors_item.add(colors_product);
     }
 
-    // Différentes fonctions pour ajouter/supprimer un produit au panier
+    function CheckIfProductColorIsAlreadyInCart(NewProduct) {
+      let TotalProductsCart = JSON.parse(localStorage.getItem('TotalProductsCart'));
+      let ProductAlreadyInCartID = TotalProductsCart?.find(({ id }) => id === NewProduct.id);
+      let ProductAlreadyInCartColor = TotalProductsCart?.find(({ color }) => color === NewProduct.color);
+
+
+      // Vérifie si le produit est déjà dans le panier avec la même couleur
+      if (ProductAlreadyInCartID && ProductAlreadyInCartColor) {
+
+        console.log('Le produit avec ID et la même couleur est déjà dans le panier, suite ... ');
+
+        let TotalQuantityWithSameColor = parseInt(ProductAlreadyInCartID.quantity) + parseInt(NewProduct.quantity)
+
+        TotalQuantityWithSameColor > 100 ? alert('Vous ne pouvez pas ajouter plus de 100 produits dans le panier') : null;
+        TotalQuantityWithSameColor <= 0 ? alert('Vous devez ajouter au moins 1 produit dans le panier') : null;
+
+        console.log(ProductAlreadyInCartID);
+
+        localStorage.setItem('TotalProductsCart', JSON.stringify(TotalProductsCart));
+
+
+      } else {
+        console.log('Le produit n\'est pas encore dans le panier ou il l\'est mais avec une autre couleur.');
+      }
+    }
+
+// Différentes fonctions pour ajouter/supprimer un produit au panier
     function CheckIfCartIsEmpty(product) {
       let TotalProductsCart = JSON.parse(localStorage.getItem('TotalProductsCart'));
       // On initie le panier dans le localStorage s'il est vide
@@ -69,10 +95,11 @@ fetch(product_url).then(response => response.json())
         quantity: quantity,
         color: color
       };
+      CheckIfProductColorIsAlreadyInCart(ComposeItemCart);
       CheckIfCartIsEmpty(ComposeItemCart);
     }
 
-    // Le bouton 'Ajouter au panier'
+// Le bouton 'Ajouter au panier'
     const addToCart = document.querySelector('#addToCart');
     addToCart.addEventListener('click', (key, value) => {
 
@@ -92,4 +119,5 @@ fetch(product_url).then(response => response.json())
         alert('S\'il vous plait, entrez une couleur');
       }
     });
-  });
+  })
+;
