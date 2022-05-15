@@ -64,15 +64,8 @@ fetch(product_url).then(response => response.json())
 
         /*TotalQuantityWithSameColor > 100 ? alert('Vous ne pouvez pas ajouter plus de 100 produits dans le panier') : null;
         TotalQuantityWithSameColor <= 0 ? alert('Vous devez ajouter au moins 1 produit dans le panier') : null;*/
-        
-        TotalProductsCart.map(product => {
-          if (product.id === NewProduct.id && product.color === NewProduct.color) {
-            product.quantity = TotalQuantityWithSameColor;
 
-            TotalProductsCart.push(product);
-            console.log(product);
-          }
-        });
+
 
       } else {
         console.log('Le produit n\'est pas encore dans le panier ou il l\'est mais avec une autre couleur.');
