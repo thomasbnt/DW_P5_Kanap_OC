@@ -60,22 +60,26 @@ fetch(product_url).then(response => response.json())
 
         console.log('Le produit avec ID et la même couleur est déjà dans le panier, suite ... ');
 
-        let TotalQuantityWithSameColor = parseInt(ProductAlreadyInCartID.quantity) + parseInt(NewProduct.quantity)
+        let TotalQuantityWithSameColor = parseInt(ProductAlreadyInCartID.quantity) + parseInt(NewProduct.quantity);
 
-        TotalQuantityWithSameColor > 100 ? alert('Vous ne pouvez pas ajouter plus de 100 produits dans le panier') : null;
-        TotalQuantityWithSameColor <= 0 ? alert('Vous devez ajouter au moins 1 produit dans le panier') : null;
+        /*TotalQuantityWithSameColor > 100 ? alert('Vous ne pouvez pas ajouter plus de 100 produits dans le panier') : null;
+        TotalQuantityWithSameColor <= 0 ? alert('Vous devez ajouter au moins 1 produit dans le panier') : null;*/
+        
+        TotalProductsCart.map(product => {
+          if (product.id === NewProduct.id && product.color === NewProduct.color) {
+            product.quantity = TotalQuantityWithSameColor;
 
-        console.log(ProductAlreadyInCartID);
-
-        localStorage.setItem('TotalProductsCart', JSON.stringify(TotalProductsCart));
-
+            TotalProductsCart.push(product);
+            console.log(product);
+          }
+        });
 
       } else {
         console.log('Le produit n\'est pas encore dans le panier ou il l\'est mais avec une autre couleur.');
       }
     }
 
-// Différentes fonctions pour ajouter/supprimer un produit au panier
+    // Différentes fonctions pour ajouter/supprimer un produit au panier
     function CheckIfCartIsEmpty(product) {
       let TotalProductsCart = JSON.parse(localStorage.getItem('TotalProductsCart'));
       // On initie le panier dans le localStorage s'il est vide
@@ -90,16 +94,13 @@ fetch(product_url).then(response => response.json())
     function AddItem(id, name, quantity, color) {
       // Ajoute le produit au panier
       let ComposeItemCart = {
-        id: id,
-        name: name,
-        quantity: quantity,
-        color: color
+        id: id, name: name, quantity: quantity, color: color
       };
       CheckIfProductColorIsAlreadyInCart(ComposeItemCart);
       CheckIfCartIsEmpty(ComposeItemCart);
     }
 
-// Le bouton 'Ajouter au panier'
+    // Le bouton 'Ajouter au panier'
     const addToCart = document.querySelector('#addToCart');
     addToCart.addEventListener('click', (key, value) => {
 
@@ -119,5 +120,4 @@ fetch(product_url).then(response => response.json())
         alert('S\'il vous plait, entrez une couleur');
       }
     });
-  })
-;
+  });
