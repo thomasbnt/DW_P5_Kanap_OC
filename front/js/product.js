@@ -8,17 +8,18 @@ const cart_list = document.querySelector('.item');
  * https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/add
  */
 
+// Selectionne le contenu de l'item et affiche une erreur s'il n'y a pas de produit ou que l'API est indisponible
+const ErrMessageInContent = document.querySelector('.item__content');
+
 fetch(product_url).then(response => response.json())
   .then(products => {
     let url = new URL(window.location.href);
     let id = url.searchParams.get('id');
 
     let product = products.find(({ _id }) => _id === id);
-    //console.table(product);
 
     // On vérifie que l'id existe
     if (product === undefined) {
-      const ErrMessageInContent = document.querySelector('.item__content');
       ErrMessageInContent.innerHTML = '<h1>Le produit n\'existe pas ou la page a été supprimée.</h1>';
     }
 
@@ -62,9 +63,9 @@ fetch(product_url).then(response => response.json())
 
         let TotalQuantityWithSameColor = parseInt(ProductAlreadyInCartID.quantity) + parseInt(NewProduct.quantity);
 
+        // TODO : Reformater ces deux lignes pour qu'elles comprennent toute la condition de l'ajout d'un produit
         /*TotalQuantityWithSameColor > 100 ? alert('Vous ne pouvez pas ajouter plus de 100 produits dans le panier') : null;
         TotalQuantityWithSameColor <= 0 ? alert('Vous devez ajouter au moins 1 produit dans le panier') : null;*/
-
 
 
       } else {
@@ -113,4 +114,6 @@ fetch(product_url).then(response => response.json())
         alert('S\'il vous plait, entrez une couleur');
       }
     });
-  });
+  }).catch(() => {
+  ErrMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
+});
