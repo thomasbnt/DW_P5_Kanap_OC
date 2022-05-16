@@ -61,12 +61,23 @@ fetch(product_url).then(response => response.json())
 
         console.log('Le produit avec ID et la même couleur est déjà dans le panier, suite ... ');
 
-        let TotalQuantityWithSameColor = parseInt(ProductAlreadyInCartID.quantity) + parseInt(NewProduct.quantity);
-
         // TODO : Reformater ces deux lignes pour qu'elles comprennent toute la condition de l'ajout d'un produit
         /*TotalQuantityWithSameColor > 100 ? alert('Vous ne pouvez pas ajouter plus de 100 produits dans le panier') : null;
         TotalQuantityWithSameColor <= 0 ? alert('Vous devez ajouter au moins 1 produit dans le panier') : null;*/
 
+        // Si le produit est déjà dans le panier, on ajoute la quantité à la quantité déjà présente
+        ProductAlreadyInCartID.quantity = parseInt(ProductAlreadyInCartID.quantity) + parseInt(NewProduct.quantity);
+        console.log(ProductAlreadyInCartID.quantity);
+        // Modifier TotalProductsCart avec les nouvelles données
+        TotalProductsCart = TotalProductsCart.map(product => {
+          if ((ProductAlreadyInCartID === product.id) && (ProductAlreadyInCartColor === product.color)) {
+            return ProductAlreadyInCartID;
+          } else {
+            return product;
+          }
+        });
+        // Modifier le localStorage avec les nouvelles données
+        localStorage.setItem('TotalProductsCart', JSON.stringify(TotalProductsCart));
 
       } else {
         console.log('Le produit n\'est pas encore dans le panier ou il l\'est mais avec une autre couleur.');
@@ -88,7 +99,7 @@ fetch(product_url).then(response => response.json())
     function AddItem(id, name, quantity, color) {
       // Ajoute le produit au panier
       let ComposeItemCart = {
-        id: id, name: name, quantity: quantity, color: color
+        id: id, name: name, quantity: parseInt(quantity), color: color
       };
       CheckIfProductColorIsAlreadyInCart(ComposeItemCart);
       CheckIfCartIsEmpty(ComposeItemCart);
