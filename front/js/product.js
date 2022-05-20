@@ -18,20 +18,20 @@ function addProductToCart(newProduct) {
   if (productCartWithSameId && productCartWithSameColor) {
     console.log('Le produit avec ID et la même couleur est déjà dans le panier, suite ... ');
 
+    // Si le produit est déjà dans le panier,
+    // on ajoute la quantité à la quantité déjà présente
     // eslint-disable-next-line max-len
-    // TODO : Reformater ces deux lignes pour qu'elles comprennent toute la condition de l'ajout d'un produit
-    /* totalQuantityWithSameColor > 100 ? alert('Vous ne pouvez pas ajouter plus de 100 produits dans le panier') : null;
-    totalQuantityWithSameColor <= 0 ? alert('Vous devez ajouter au moins 1 produit dans le panier') : null; */
-
-    // Si le produit est déjà dans le panier, on ajoute la quantité à la quantité déjà présente
     productCartWithSameId.quantity = parseInt(productCartWithSameId.quantity, 10) + parseInt(newProduct.quantity, 10);
     // Modifier totalProductsCart avec les nouvelles données
-    totalProductsCart = totalProductsCart.map((product) => {
-      if ((productCartWithSameId.id === product.id) && (productCartWithSameColor.color === product.color)) {
-        return productCartWithSameId;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [index, product] of totalProductsCart.entries()) {
+      if (product.id === newProduct.id && product.color === newProduct.color) {
+        if (productCartWithSameId.quantity < 100 && productCartWithSameId.quantity > 0) {
+          console.log(totalProductsCart[index]);
+          totalProductsCart[index].quantity = productCartWithSameId.quantity;
+        }
       }
-      return product;
-    });
+    }
     // Modifier le localStorage avec les nouvelles données
     localStorage.setItem('totalProductsCart', JSON.stringify(totalProductsCart));
   } else {
@@ -114,5 +114,5 @@ fetch(productUrl).then((response) => response.json())
       }
     });
   }).catch(() => {
-    errMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
-  });
+  errMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
+});
