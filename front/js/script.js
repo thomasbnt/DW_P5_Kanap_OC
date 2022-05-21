@@ -22,7 +22,7 @@ fetch(productUrl)
   }).catch(() => {
   // Sélectionne le contenu de l'item et affiche une erreur
   // s'il n'y a pas de produit ou que l'API est indisponible
-  const errMessageInContent = document.querySelector('.titles');
-  console.log(errMessageInContent);
-  errMessageInContent.innerHTML = '<h1>Erreur 503</h1><h2>Impossible de récupérer les articles depuis l\'API.</h2>';
-});
+    const errMessageInContent = document.querySelector('.titles');
+    console.log(errMessageInContent);
+    errMessageInContent.innerHTML = '<h1>Erreur 503</h1><h2>Impossible de récupérer les articles depuis l\'API.</h2>';
+  });
