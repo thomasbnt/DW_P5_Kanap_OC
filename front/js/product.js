@@ -1,5 +1,4 @@
-const baseUrl = 'http://localhost:3000/api/';
-const productUrl = `${baseUrl}products`;
+const baseUrl = 'http://localhost:3000/api/products';
 /**
  * https://developer.mozilla.org/en-US/docs/Web/API/URL/searchParams
  * https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/add
@@ -16,19 +15,17 @@ function addProductToCart(newProduct) {
 
   // Vérifie si le produit est déjà dans le panier avec la même couleur
   if (productCartWithSameId && productCartWithSameColor) {
-    console.log('Le produit avec ID et la même couleur est déjà dans le panier, suite ... ');
-
-    // Si le produit est déjà dans le panier,
-    // on ajoute la quantité à la quantité déjà présente
     // eslint-disable-next-line max-len
     productCartWithSameId.quantity = parseInt(productCartWithSameId.quantity, 10) + parseInt(newProduct.quantity, 10);
-    // Modifier totalProductsCart avec les nouvelles données
+    // boucle pour ajouter la quantité du produit si la couleur et l'id sont identiques
     // eslint-disable-next-line no-restricted-syntax
     for (const [index, product] of totalProductsCart.entries()) {
-      if (product.id === newProduct.id && product.color === newProduct.color) {
+      if ((product.color === newProduct.color) && (product.id === newProduct.id)) {
         if (productCartWithSameId.quantity < 100 && productCartWithSameId.quantity > 0) {
-          console.log(totalProductsCart[index]);
-          totalProductsCart[index].quantity = productCartWithSameId.quantity;
+          console.log({ productCartWithSameId });
+          if (totalProductsCart[index].color === productCartWithSameColor.color) {
+            totalProductsCart[index].quantity = productCartWithSameColor.quantity;
+          }
         }
       }
     }
@@ -40,25 +37,31 @@ function addProductToCart(newProduct) {
       // On ajoute le premier Item dans le panier
       totalProductsCart = [];
     }
+    // Si le produit est déjà dans le panier, mais que la couleur n'est pas encore présente,
+    // On ajoute dans un nouveau array le produit et sa quantité avec la couleur
+
     totalProductsCart.push(newProduct);
     localStorage.setItem('totalProductsCart', JSON.stringify(totalProductsCart));
-    console.log('Le produit n\'est pas encore dans le panier ou il l\'est mais avec une autre couleur.');
   }
 }
 
 function addItem(id, name, quantity, color) {
-  // Ajoute le produit au panier
+  // Créer un nouvel objet avec les données du produit
   const productToAdd = {
-    id, name, quantity: parseInt(quantity, 10), color,
+    id,
+    name,
+    quantity: parseInt(quantity, 10),
+    color,
   };
+  // Ajoute le produit au panier
   addProductToCart(productToAdd);
 }
 
-fetch(productUrl).then((response) => response.json())
+fetch(baseUrl).then((response) => response.json())
   .then((products) => {
+    // Sélectionne le contenu de la page avec searchParams avec l'id du produit
     const url = new URL(window.location.href);
     const id = url.searchParams.get('id');
-
     const product = products.find(({ _id }) => _id === id);
 
     // On vérifie que l'id existe
@@ -97,11 +100,11 @@ fetch(productUrl).then((response) => response.json())
     const addToCart = document.querySelector('#addToCart');
     addToCart.addEventListener('click', () => {
       // Récupère la quantité choisie par l'utilisateur
-      // En vérifiant si c'est compris entre 1 et 100 et non vide
       const quantityItem = document.querySelector('#quantity');
       const quantity = quantityItem.value;
       const color = colorsItem.value;
 
+      // En vérifiant si c'est compris entre 1 et 100 et non vide
       if (colorsItem.value !== '') {
         if ((quantityItem.value >= 1) && (quantityItem.value <= 100)) {
           // eslint-disable-next-line no-underscore-dangle
@@ -114,5 +117,5 @@ fetch(productUrl).then((response) => response.json())
       }
     });
   }).catch(() => {
-  errMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
-});
+    errMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
+  });
