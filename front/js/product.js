@@ -15,8 +15,6 @@ function addProductToCart(newProduct) {
 
   // Vérifie si le produit est déjà dans le panier avec la même couleur
   if (productCartWithSameId && productCartWithSameColor) {
-    // eslint-disable-next-line max-len
-    productCartWithSameId.quantity = parseInt(productCartWithSameId.quantity, 10) + parseInt(newProduct.quantity, 10);
     // boucle pour ajouter la quantité du produit si la couleur et l'id sont identiques
     // eslint-disable-next-line no-restricted-syntax
     for (const [index, product] of totalProductsCart.entries()) {
@@ -24,7 +22,7 @@ function addProductToCart(newProduct) {
         if (productCartWithSameId.quantity < 100 && productCartWithSameId.quantity > 0) {
           console.log({ productCartWithSameId });
           if (totalProductsCart[index].color === productCartWithSameColor.color) {
-            totalProductsCart[index].quantity = productCartWithSameColor.quantity;
+            totalProductsCart[index].quantity = productCartWithSameColor.quantity + newProduct.quantity;
           }
         }
       }
