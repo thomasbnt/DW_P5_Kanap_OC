@@ -23,6 +23,9 @@ async function getAllProducts() {
     disableButton.disabled = true;
     // Mets le curseur en mode not-allowed sur le bouton de commande
     disableButton.style.cssText = 'cursor: not-allowed';
+    // Ajoute les valeurs 0 pour la quantité et pour le prix total
+    document.querySelector('#totalQuantity').innerHTML = '0';
+    document.querySelector('#totalPrice').innerHTML = '0';
   }
 
   // Si le localstorage n'est pas vide, on retourne toutes les données du localstorage
@@ -42,7 +45,7 @@ async function getAllProducts() {
         productContainer.setAttribute('data-color', product.color);
         productContainer.innerHTML = `
             <div class='cart__item__img'>
-              <img src='${responseData.imageUrl}' alt="${responseData.altTxt}">
+              <img src='${responseData.imageUrl}' alt='${responseData.altTxt}'>
             </div>
             <div class='cart__item__content'>
               <div class='cart__item__content__description'>
@@ -70,4 +73,20 @@ async function getAllProducts() {
   }
 }
 
+async function getAllQuantity() {
+  const totalProductsCart = JSON.parse(localStorage.getItem('totalProductsCart'));
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [index, product] of totalProductsCart.entries()) {
+    console.log(product.quantity);
+    const x = [];
+    x.push(product.quantity);
+    console.log(x);
+
+
+  }
+  const totalQuantity = document.querySelector('#totalQuantity');
+  totalQuantity.innerHTML = 'oui';
+}
+
 getAllProducts();
+getAllQuantity();
