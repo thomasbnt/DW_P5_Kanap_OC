@@ -4,6 +4,7 @@ const productUrl = `${baseUrl}products`;
 // Récupère le localstorage
 const allProducts = JSON.parse(localStorage.getItem('totalProductsCart'));
 
+// Obtenir le prix total pour chaque produit comprenant la quantité
 async function getTotalPrice(product) {
   const response = await fetch(`${productUrl}/${product.id}`);
   if (response.ok) {
@@ -13,6 +14,7 @@ async function getTotalPrice(product) {
   return 0;
 }
 
+// Obtenir tous les produits qui se trouvent dans le LS et l'afficher dans la commande
 async function getAllProducts() {
   // Si le localstorage est vide, on retourne un message d'erreur
   if (allProducts === null) {
@@ -73,6 +75,7 @@ async function getAllProducts() {
   }
 }
 
+// Obtenir le prix total de la commande
 async function getAllQuantity() {
   const totalProductsCart = JSON.parse(localStorage.getItem('totalProductsCart'));
   // eslint-disable-next-line no-restricted-syntax
