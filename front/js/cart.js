@@ -78,9 +78,15 @@ async function getAllProducts() {
 // Obtenir le prix total de la commande
 async function getAllQuantity() {
   const totalProductsCart = JSON.parse(localStorage.getItem('totalProductsCart'));
+  // Additionne toutes les quantités de chaque produit dans calculTotalQuantity
+  const calculateTotalQuantity = totalProductsCart.reduce((acc, cur) => acc + cur.quantity, 0);
+  // TODO : Faire un total de tous les prix de chaque produit dans calculTotalPrice
+  //const calculateTotalPrice = totalProductsCart.reduce((acc, cur) => acc + cur.price, 0);
+  //console.log({ calculateTotalPrice });
 
   const totalQuantity = document.querySelector('#totalQuantity');
   totalQuantity.innerHTML = 'oui';
+  totalQuantity.innerHTML = calculateTotalQuantity;
 }
 
 getAllProducts();
