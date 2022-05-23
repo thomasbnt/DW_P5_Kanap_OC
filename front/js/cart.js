@@ -85,7 +85,6 @@ async function getAllQuantity() {
   //console.log({ calculateTotalPrice });
 
   const totalQuantity = document.querySelector('#totalQuantity');
-  totalQuantity.innerHTML = 'oui';
   totalQuantity.innerHTML = calculateTotalQuantity;
 }
 
