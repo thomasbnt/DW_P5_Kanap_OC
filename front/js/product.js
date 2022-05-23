@@ -20,7 +20,6 @@ function addProductToCart(newProduct) {
     for (const [index, product] of totalProductsCart.entries()) {
       if ((product.color === newProduct.color) && (product.id === newProduct.id)) {
         if (productCartWithSameId.quantity < 100 && productCartWithSameId.quantity > 0) {
-          console.log({ productCartWithSameId });
           if (totalProductsCart[index].color === productCartWithSameColor.color) {
             totalProductsCart[index].quantity = productCartWithSameColor.quantity + newProduct.quantity;
           }
@@ -87,6 +86,7 @@ fetch(baseUrl).then((response) => response.json())
 
     // Ajouter toutes les couleurs disponibles pour ce produit
     const colorsItem = document.querySelector('#colors');
+    // eslint-disable-next-line no-restricted-syntax
     for (product.color of product.colors) {
       const colorsProduct = document.createElement('option');
       colorsProduct.text = product.color;
