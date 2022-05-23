@@ -78,15 +78,7 @@ async function getAllProducts() {
 // Obtenir le prix total de la commande
 async function getAllQuantity() {
   const totalProductsCart = JSON.parse(localStorage.getItem('totalProductsCart'));
-  // eslint-disable-next-line no-restricted-syntax
-  for (const [index, product] of totalProductsCart.entries()) {
-    console.log(product.quantity);
-    const x = [];
-    x.push(product.quantity);
-    console.log(x);
 
-
-  }
   const totalQuantity = document.querySelector('#totalQuantity');
   totalQuantity.innerHTML = 'oui';
 }
