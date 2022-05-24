@@ -46,7 +46,6 @@ function addItem(id, name, quantity, color) {
   // Créer un nouvel objet avec les données du produit
   const productToAdd = {
     id,
-    name,
     quantity: parseInt(quantity, 10),
     color,
   };
