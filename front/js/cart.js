@@ -66,5 +66,71 @@ function getAllQuantity() {
   totalQuantity.innerHTML = calculateTotalQuantity;
 }
 
+function order() {
+
+}
+
+// On récupère tous les éléments de la page par leur ID
+const btnSubmit = document.getElementById('order');
+const firstName = document.getElementById('firstName');
+const lastName = document.getElementById('lastName');
+const address = document.getElementById('address');
+const city = document.getElementById('city');
+const email = document.getElementById('email');
+const errorFirstName = document.getElementById('firstNameErrorMsg');
+const errorLastName = document.getElementById('lastNameErrorMsg');
+const errorAddress = document.getElementById('addressErrorMsg');
+const errorCity = document.getElementById('cityErrorMsg');
+const errorEmail = document.getElementById('emailErrorMsg');
+
+// On déclare les regex pour le nom, l'email et l'adresse postale
+const textRegex = /^[A-Z][A-Za-z]+$/;
+const emailRegex = /^\S+@\S+\.\S+$/;
+const addressRegex = /^[0-9]{1,3} [A-Za-z]{1,20} [0-9]{1,3}$/;
+
+// Quand on clique sur le bouton 'commander'
+btnSubmit.addEventListener('click', () => {
+  // On vérifie si le champ est rempli et si c'est valide pour le prénom
+  if ((firstName.value === '') || (!textRegex.test(firstName.value))) {
+    errorFirstName.innerHTML = 'Veuillez renseigner votre prénom';
+    firstName.style.border = '1px solid red';
+  } else {
+    errorFirstName.innerHTML = '';
+    firstName.style.border = '1px solid green';
+  }
+  // On vérifie si le champ est rempli et si c'est valide pour le nom
+  if ((lastName.value === '') || (!textRegex.test(lastName.value))) {
+    errorLastName.innerHTML = 'Veuillez renseigner votre nom';
+    lastName.style.border = '1px solid red';
+  } else {
+    errorLastName.innerHTML = '';
+    lastName.style.border = '1px solid green';
+  }
+  // On vérifie si le champ est rempli et si c'est valide pour l'adresse postale
+  if ((address.value === '') || (!addressRegex.test(address.value))) {
+    errorAddress.innerHTML = 'Veuillez renseigner votre adresse postale';
+    address.style.border = '1px solid red';
+  } else {
+    errorAddress.innerHTML = '';
+    address.style.border = '1px solid green';
+  }
+  // On vérifie si le champ est rempli et si c'est valide pour la ville
+  if ((city.value === '') || (!textRegex.test(city.value))) {
+    errorCity.innerHTML = 'Veuillez renseigner votre ville';
+    city.style.border = '1px solid red';
+  } else {
+    errorCity.innerHTML = '';
+    city.style.border = '1px solid green';
+  }
+  // On vérifie si le champ est rempli et si c'est valide pour l'email
+  if ((email.value === '') || (!emailRegex.test(email.value))) {
+    errorEmail.innerHTML = 'Veuillez renseigner votre email';
+    email.style.border = '1px solid red';
+  } else {
+    errorEmail.innerHTML = '';
+    email.style.border = '1px solid green';
+  }
+});
+
 getAllProducts();
 getAllQuantity();
