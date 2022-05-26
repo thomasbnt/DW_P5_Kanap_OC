@@ -6,7 +6,7 @@ const allProducts = JSON.parse(localStorage.getItem('totalProductsCart'));
 
 // Obtenir tous les produits qui se trouvent dans le LS et l'afficher dans la commande
 async function getAllProducts() {
-  // Si le localstorage est vide, on retourne un message d'erreur
+  // Si le localstorage est vide, on retourne un message disant que le panier est vide.
   if (allProducts === null) {
     const noProductsMessage = document.querySelector('#cart__items');
     noProductsMessage.innerHTML = '<h2>Votre panier est vide</h2>';
@@ -22,17 +22,16 @@ async function getAllProducts() {
 
   // Si le localstorage n'est pas vide, on retourne toutes les données du localstorage
   // avec une boucle et un createElement
-  if (allProducts !== null) {
-    allProducts.map(async (product) => {
-      const response = await fetch(`${productUrl}/${product.id}`);
-      if (response.ok) {
-        // On récupère depuis l'API les données de chaque produit
-        const responseData = await response.json();
-        const productContainer = document.createElement('article');
-        productContainer.classList.add('cart__item');
-        productContainer.setAttribute('data-id', product.id);
-        productContainer.setAttribute('data-color', product.color);
-        productContainer.innerHTML = `
+  allProducts.map(async (product) => {
+    const response = await fetch(`${productUrl}/${product.id}`);
+    if (response.ok) {
+      // On récupère depuis l'API les données de chaque produit
+      const responseData = await response.json();
+      const productContainer = document.createElement('article');
+      productContainer.classList.add('cart__item');
+      productContainer.setAttribute('data-id', product.id);
+      productContainer.setAttribute('data-color', product.color);
+      productContainer.innerHTML = `
             <div class='cart__item__img'>
               <img src='${responseData.imageUrl}' alt='${responseData.altTxt}'>
             </div>
@@ -53,11 +52,10 @@ async function getAllProducts() {
               </div>
             </div>
       `;
-        // Ajoute la div créée au DOM
-        document.querySelector('#cart__items').appendChild(productContainer);
-      }
-    });
-  }
+      // Ajoute la div créée au DOM
+      document.querySelector('#cart__items').appendChild(productContainer);
+    }
+  });
 }
 
 // Obtenir le prix total de la commande
