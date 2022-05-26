@@ -58,15 +58,10 @@ async function getAllProducts() {
   });
 }
 
-// Obtenir le prix total de la commande
+// Obtenir le total des quantités de la commande
 function getAllQuantity() {
-  const totalProductsCart = JSON.parse(localStorage.getItem('totalProductsCart'));
   // Additionne toutes les quantités de chaque produit dans calculTotalQuantity
-  const calculateTotalQuantity = totalProductsCart.reduce((acc, cur) => acc + cur.quantity, 0);
-  // TODO : Faire un total de tous les prix de chaque produit dans calculTotalPrice
-  //const calculateTotalPrice = totalProductsCart.reduce((acc, cur) => acc + cur.price, 0);
-  //console.log({ calculateTotalPrice });
-
+  const calculateTotalQuantity = allProducts.reduce((acc, cur) => acc + cur.quantity, 0);
   const totalQuantity = document.querySelector('#totalQuantity');
   totalQuantity.innerHTML = calculateTotalQuantity;
 }
