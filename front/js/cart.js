@@ -1,5 +1,6 @@
 const baseUrl = 'http://localhost:3000/api/';
 const productUrl = `${baseUrl}products`;
+const orderUrl = `${baseUrl}order`;
 
 // Récupère le localstorage
 const allProducts = JSON.parse(localStorage.getItem('totalProductsCart'));
@@ -66,10 +67,6 @@ function getAllQuantity() {
   totalQuantity.innerHTML = calculateTotalQuantity;
 }
 
-function order() {
-
-}
-
 // On récupère tous les éléments de la page par leur ID
 const btnSubmit = document.getElementById('order');
 const firstName = document.getElementById('firstName');
@@ -84,51 +81,141 @@ const errorCity = document.getElementById('cityErrorMsg');
 const errorEmail = document.getElementById('emailErrorMsg');
 
 // On déclare les regex pour le nom, l'email et l'adresse postale
-const textRegex = /^[A-Z][A-Za-z]+$/;
+const textRegex = /^[A-Za-z]+$/;
 const emailRegex = /^\S+@\S+\.\S+$/;
-const addressRegex = /^[0-9]{1,3} [A-Za-z]{1,20} [0-9]{1,3}$/;
+const addressRegex = /^[A-Za-z0-9 ]{3,30}$/;
+
+function checkFirstName() {
+  // On vérifie si le champ est rempli et si c'est valide pour le prénom
+  function errFirstName() {
+    errorFirstName.innerHTML = 'Veuillez renseigner votre prénom';
+    firstName.style.border = '1px solid red';
+  }
+
+  if (firstName.value === '') {
+    errFirstName();
+    return false;
+  }
+  if (!textRegex.test(firstName.value)) {
+    errFirstName();
+    return false;
+  }
+  errorFirstName.innerHTML = '';
+  firstName.style.border = '1px solid green';
+  return true;
+}
+
+function checkLastName() {
+  // On vérifie si le champ est rempli et si c'est valide pour le nom
+  function errLastName() {
+    errorLastName.innerHTML = 'Veuillez renseigner votre nom';
+    lastName.style.border = '1px solid red';
+  }
+
+  if (lastName.value === '') {
+    errLastName();
+    return false;
+  }
+  if (!textRegex.test(lastName.value)) {
+    errLastName();
+    return false;
+  }
+  errorLastName.innerHTML = '';
+  lastName.style.border = '1px solid green';
+}
+
+function checkAddress() {
+  // On vérifie si le champ est rempli et si c'est valide pour l'adresse postale
+  function errAddress() {
+    errorAddress.innerHTML = 'Veuillez renseigner votre adresse postale';
+    address.style.border = '1px solid red';
+  }
+
+  if (address.value === '') {
+    errAddress();
+    return false;
+  }
+  if (!addressRegex.test(address.value)) {
+    errAddress();
+    return false;
+  }
+  errorAddress.innerHTML = '';
+  address.style.border = '1px solid green';
+}
+
+function checkCity() {
+  // On vérifie si le champ est rempli et si c'est valide pour la ville
+  function errCity() {
+    errorCity.innerHTML = 'Veuillez renseigner votre ville';
+    city.style.border = '1px solid red';
+  }
+
+  if (city.value === '') {
+    errCity();
+    return false;
+  }
+  if (!textRegex.test(city.value)) {
+    errCity();
+    return false;
+  }
+  errorCity.innerHTML = '';
+  city.style.border = '1px solid green';
+}
+
+function checkEmail() {
+  // On vérifie si le champ est rempli et si c'est valide pour l'email
+  function errEmail() {
+    errorEmail.innerHTML = 'Veuillez renseigner votre email';
+    email.style.border = '1px solid red';
+  }
+
+  if (email.value === '') {
+    errEmail();
+    return false;
+  }
+  if (!emailRegex.test(email.value)) {
+    errEmail();
+    return false;
+  }
+  errorEmail.innerHTML = '';
+  email.style.border = '1px solid green';
+}
+
+function order() {
+  // On déclare le client dans un tableau pour ensuite l'envoyer sur l'API order
+  const client = {
+    firstName: document.querySelector('#firstName').value,
+    lastName: document.querySelector('#lastName').value,
+    email: document.querySelector('#email').value,
+    address: document.querySelector('#address').value,
+    city: document.querySelector('#city').value,
+  };
+  // On fait une requête POST pour envoyer le client et les produits commandés
+  fetch(`${baseUrl}/${orderUrl}`, {
+    method: 'POST',
+    body: JSON.stringify(client),
+    headers: { 'Content-Type': 'application/json' },
+  })
+    .then((response) => response.json())
+    .then((value) => {
+      alert('Votre commande a bien été prise en compte');
+      localStorage.removeItem('totalProductsCart');
+      console.log(value);
+      window.location.href = `../html/confirmation.html?id=${value.orderId}`;
+    })
+    .catch((error) => alert(error) && console.log(error));
+}
 
 // Quand on clique sur le bouton 'commander'
 btnSubmit.addEventListener('click', () => {
-  // On vérifie si le champ est rempli et si c'est valide pour le prénom
-  if ((firstName.value === '') || (!textRegex.test(firstName.value))) {
-    errorFirstName.innerHTML = 'Veuillez renseigner votre prénom';
-    firstName.style.border = '1px solid red';
-  } else {
-    errorFirstName.innerHTML = '';
-    firstName.style.border = '1px solid green';
-  }
-  // On vérifie si le champ est rempli et si c'est valide pour le nom
-  if ((lastName.value === '') || (!textRegex.test(lastName.value))) {
-    errorLastName.innerHTML = 'Veuillez renseigner votre nom';
-    lastName.style.border = '1px solid red';
-  } else {
-    errorLastName.innerHTML = '';
-    lastName.style.border = '1px solid green';
-  }
-  // On vérifie si le champ est rempli et si c'est valide pour l'adresse postale
-  if ((address.value === '') || (!addressRegex.test(address.value))) {
-    errorAddress.innerHTML = 'Veuillez renseigner votre adresse postale';
-    address.style.border = '1px solid red';
-  } else {
-    errorAddress.innerHTML = '';
-    address.style.border = '1px solid green';
-  }
-  // On vérifie si le champ est rempli et si c'est valide pour la ville
-  if ((city.value === '') || (!textRegex.test(city.value))) {
-    errorCity.innerHTML = 'Veuillez renseigner votre ville';
-    city.style.border = '1px solid red';
-  } else {
-    errorCity.innerHTML = '';
-    city.style.border = '1px solid green';
-  }
-  // On vérifie si le champ est rempli et si c'est valide pour l'email
-  if ((email.value === '') || (!emailRegex.test(email.value))) {
-    errorEmail.innerHTML = 'Veuillez renseigner votre email';
-    email.style.border = '1px solid red';
-  } else {
-    errorEmail.innerHTML = '';
-    email.style.border = '1px solid green';
+  const isValidFirstName = checkFirstName();
+  const isValidLastName = checkLastName();
+  const isValidAddress = checkAddress();
+  const isValidCity = checkCity();
+  const isValidEmail = checkEmail();
+
+  if (isValidFirstName && isValidLastName && isValidAddress && isValidCity && isValidEmail) {
+    order();
   }
 });
 
