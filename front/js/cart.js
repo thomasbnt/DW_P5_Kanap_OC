@@ -214,7 +214,8 @@ function order() {
       localStorage.clear();
       window.location.href = `../html/confirmation.html?id=${value.orderId}`;
     })
-    .catch((error) => alert(error));}
+    .catch((error) => alert(error));
+}
 
 // Quand on clique sur le bouton 'commander'
 btnSubmit.addEventListener('click', () => {
