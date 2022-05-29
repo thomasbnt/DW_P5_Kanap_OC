@@ -1,6 +1,6 @@
 const baseUrl = 'http://localhost:3000/api/';
 const productUrl = `${baseUrl}products`;
-const orderUrl = `${baseUrl}order`;
+const orderUrl = `${baseUrl}products/order`;
 
 // Récupère le localstorage
 const allProducts = JSON.parse(localStorage.getItem('totalProductsCart'));
