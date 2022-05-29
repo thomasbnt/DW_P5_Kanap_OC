@@ -21,18 +21,20 @@ async function getAllProducts() {
     document.querySelector('#totalPrice').innerHTML = '0';
   }
 
-  // Si le localstorage n'est pas vide, on retourne toutes les données du localstorage
-  // avec une boucle et un createElement
-  allProducts.map(async (product) => {
-    const response = await fetch(`${productUrl}/${product.id}`);
-    if (response.ok) {
-      // On récupère depuis l'API les données de chaque produit
-      const responseData = await response.json();
-      const productContainer = document.createElement('article');
-      productContainer.classList.add('cart__item');
-      productContainer.setAttribute('data-id', product.id);
-      productContainer.setAttribute('data-color', product.color);
-      productContainer.innerHTML = `
+  // On vérifie si le LS n'est pas vide pour éviter les erreurs
+  if (allProducts) {
+    // Si le localstorage n'est pas vide, on retourne toutes les données du localstorage
+    // avec une boucle et un createElement
+    allProducts.map(async (product) => {
+      const response = await fetch(`${productUrl}/${product.id}`);
+      if (response.ok) {
+        // On récupère depuis l'API les données de chaque produit
+        const responseData = await response.json();
+        const productContainer = document.createElement('article');
+        productContainer.classList.add('cart__item');
+        productContainer.setAttribute('data-id', product.id);
+        productContainer.setAttribute('data-color', product.color);
+        productContainer.innerHTML = `
             <div class='cart__item__img'>
               <img src='${responseData.imageUrl}' alt='${responseData.altTxt}'>
             </div>
@@ -53,18 +55,25 @@ async function getAllProducts() {
               </div>
             </div>
       `;
-      // Ajoute la div créée au DOM
-      document.querySelector('#cart__items').appendChild(productContainer);
-    }
-  });
+        // Ajoute la div créée au DOM
+        document.querySelector('#cart__items').appendChild(productContainer);
+      }
+    });
+  }
 }
 
 // Obtenir le total des quantités de la commande
 function getAllQuantity() {
-  // Additionne toutes les quantités de chaque produit dans calculTotalQuantity
-  const calculateTotalQuantity = allProducts.reduce((acc, cur) => acc + cur.quantity, 0);
   const totalQuantity = document.querySelector('#totalQuantity');
-  totalQuantity.innerHTML = calculateTotalQuantity;
+  // On vérifie si le LS est vide
+  if (!allProducts) {
+    totalQuantity.innerHTML = '0';
+  }
+  // Si ce n'est pas le cas, alors on calcule le total des quantités
+  if (allProducts) {
+    // Additionne toutes les quantités de chaque produit dans calculTotalQuantity
+    totalQuantity.innerHTML = allProducts.reduce((acc, cur) => acc + cur.quantity, 0);
+  }
 }
 
 // On récupère tous les éléments de la page par leur ID
@@ -195,19 +204,22 @@ function order() {
     city: document.querySelector('#city').value,
   };
   // On fait une requête POST pour envoyer le client et les produits commandés
-  fetch(`${baseUrl}/${orderUrl}`, {
+  fetch(`${orderUrl}`, {
     method: 'POST',
     body: JSON.stringify(client),
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    },
   })
     .then((response) => response.json())
     .then((value) => {
       alert('Votre commande a bien été prise en compte');
-      localStorage.removeItem('totalProductsCart');
+      localStorage.clear();
       console.log(value);
       window.location.href = `../html/confirmation.html?id=${value.orderId}`;
     })
-    .catch((error) => alert(error) && console.log(error));
+    .catch((error) => alert(error));
 }
 
 // Quand on clique sur le bouton 'commander'
