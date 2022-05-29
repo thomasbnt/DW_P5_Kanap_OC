@@ -122,6 +122,7 @@ function checkLastName() {
   }
   errorLastName.innerHTML = '';
   lastName.style.border = '1px solid green';
+  return true;
 }
 
 function checkAddress() {
@@ -141,6 +142,7 @@ function checkAddress() {
   }
   errorAddress.innerHTML = '';
   address.style.border = '1px solid green';
+  return true;
 }
 
 function checkCity() {
@@ -160,6 +162,7 @@ function checkCity() {
   }
   errorCity.innerHTML = '';
   city.style.border = '1px solid green';
+  return true;
 }
 
 function checkEmail() {
@@ -179,6 +182,7 @@ function checkEmail() {
   }
   errorEmail.innerHTML = '';
   email.style.border = '1px solid green';
+  return true;
 }
 
 function order() {
