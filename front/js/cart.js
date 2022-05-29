@@ -190,6 +190,13 @@ function checkEmail() {
 }
 
 function order() {
+  const purchase = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const allPurchase of allProducts) {
+    console.log({ allPurchase });
+    console.log({ allProducts });
+    purchase.push(allPurchase.id);
+  }
   // On déclare le client dans un tableau pour ensuite l'envoyer sur l'API order
   const client = {
     products: purchase,
