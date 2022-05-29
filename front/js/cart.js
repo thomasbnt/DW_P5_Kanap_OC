@@ -92,7 +92,6 @@ const errorEmail = document.getElementById('emailErrorMsg');
 // On déclare les regex pour le nom, l'email et l'adresse postale
 const textRegex = /^[A-Za-z]+$/;
 const emailRegex = /^\S+@\S+\.\S+$/;
-const addressRegex = /^[A-Za-z0-9 ]{3,30}$/;
 
 function checkFirstName() {
   // On vérifie si le champ est rempli et si c'est valide pour le prénom
@@ -142,10 +141,6 @@ function checkAddress() {
   }
 
   if (address.value === '') {
-    errAddress();
-    return false;
-  }
-  if (!addressRegex.test(address.value)) {
     errAddress();
     return false;
   }
