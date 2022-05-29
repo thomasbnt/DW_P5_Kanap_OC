@@ -211,7 +211,6 @@ function order() {
   })
     .then((res) => res.json())
     .then((value) => {
-      alert('Votre commande a bien été prise en compte');
       localStorage.clear();
       window.location.href = `../html/confirmation.html?id=${value.orderId}`;
     })
