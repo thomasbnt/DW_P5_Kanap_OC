@@ -192,11 +192,14 @@ function checkEmail() {
 function order() {
   // On déclare le client dans un tableau pour ensuite l'envoyer sur l'API order
   const client = {
-    firstName: document.querySelector('#firstName').value,
-    lastName: document.querySelector('#lastName').value,
-    email: document.querySelector('#email').value,
-    address: document.querySelector('#address').value,
-    city: document.querySelector('#city').value,
+    products: purchase,
+    contact: {
+      firstName: document.querySelector('#firstName').value,
+      lastName: document.querySelector('#lastName').value,
+      email: document.querySelector('#email').value,
+      address: document.querySelector('#address').value,
+      city: document.querySelector('#city').value,
+    },
   };
   // On fait une requête POST pour envoyer le client et les produits commandés
   fetch(`${orderUrl}`, {
@@ -204,18 +207,15 @@ function order() {
     body: JSON.stringify(client),
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
     },
   })
-    .then((response) => response.json())
+    .then((res) => res.json())
     .then((value) => {
       alert('Votre commande a bien été prise en compte');
       localStorage.clear();
-      console.log(value);
       window.location.href = `../html/confirmation.html?id=${value.orderId}`;
     })
-    .catch((error) => alert(error));
-}
+    .catch((error) => alert(error));}
 
 // Quand on clique sur le bouton 'commander'
 btnSubmit.addEventListener('click', () => {
