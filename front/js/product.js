@@ -19,9 +19,18 @@ function addProductToCart(newProduct) {
     // eslint-disable-next-line no-restricted-syntax
     for (const [index, product] of totalProductsCart.entries()) {
       if ((product.color === newProduct.color) && (product.id === newProduct.id)) {
+        // On vérifie si la quantité n'est pas supérieure à 100 et inférieure à 0
         if (productCartWithSameId.quantity < 100 && productCartWithSameId.quantity > 0) {
+          // On va insérer dans la bonne couleur le produit qu'on choisit
           if (totalProductsCart[index].color === productCartWithSameColor.color) {
-            totalProductsCart[index].quantity = productCartWithSameColor.quantity + newProduct.quantity;
+            // On vérifie si le total ne dépasse pas 100 quantités,
+            // sinon dans ce cas-là, on retourne 100.
+            if ((productCartWithSameColor.quantity + newProduct.quantity) > 100) {
+              totalProductsCart[index].quantity = 100;
+            } else {
+              // On additionne la quantité du produit déjà dans le panier avec la nouvelle quantité
+              totalProductsCart[index].quantity = productCartWithSameColor.quantity + newProduct.quantity;
+            }
           }
         }
       }
@@ -114,5 +123,5 @@ fetch(baseUrl).then((response) => response.json())
       }
     });
   }).catch(() => {
-    errMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
-  });
+  errMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
+});
