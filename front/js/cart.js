@@ -30,6 +30,7 @@ async function getAllProducts() {
       if (response.ok) {
         // On récupère depuis l'API les données de chaque produit
         const responseData = await response.json();
+        const totalPricePerProduct = product.quantity * responseData.price;
         const productContainer = document.createElement('article');
         productContainer.classList.add('cart__item');
         productContainer.setAttribute('data-id', product.id);
@@ -42,7 +43,7 @@ async function getAllProducts() {
               <div class='cart__item__content__description'>
                 <h2>${responseData.name}</h2>
                 <p>${product.color}</p>
-                <p>${product.quantity * responseData.price} €</p>
+                <p>${totalPricePerProduct} €</p>
               </div>
               <div class='cart__item__content__settings'>
                 <div class='cart__item__content__settings__quantity'>
@@ -59,6 +60,8 @@ async function getAllProducts() {
         document.querySelector('#cart__items').appendChild(productContainer);
       }
     });
+  } else {
+    totalPriceSelector.innerHTML = '0';
   }
 }
 
