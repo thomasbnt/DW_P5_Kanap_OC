@@ -7,6 +7,7 @@ const allProducts = JSON.parse(localStorage.getItem('totalProductsCart'));
 
 // Obtenir tous les produits qui se trouvent dans le LS et l'afficher dans la commande
 async function getAllProducts() {
+  let totalPrice = 0;
   // Si le localstorage est vide, on retourne un message disant que le panier est vide.
   if (allProducts === null) {
     const noProductsMessage = document.querySelector('#cart__items');
@@ -32,6 +33,10 @@ async function getAllProducts() {
         // On récupère depuis l'API les données de chaque produit
         const responseData = await response.json();
         const totalPricePerProduct = product.quantity * responseData.price;
+
+        totalPrice += totalPricePerProduct;
+        totalPriceSelector.innerHTML = totalPrice;
+
         const productContainer = document.createElement('article');
         productContainer.classList.add('cart__item');
         productContainer.setAttribute('data-id', product.id);
@@ -197,8 +202,6 @@ function order() {
   const purchase = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const allPurchase of allProducts) {
-    console.log({ allPurchase });
-    console.log({ allProducts });
     purchase.push(allPurchase.id);
   }
   // On déclare le client dans un tableau pour ensuite l'envoyer sur l'API order
