@@ -20,6 +20,7 @@ async function getAllProducts() {
     document.querySelector('#totalQuantity').innerHTML = '0';
     document.querySelector('#totalPrice').innerHTML = '0';
   }
+  const totalPriceSelector = document.querySelector('#totalPrice');
 
   // On vérifie si le LS n'est pas vide pour éviter les erreurs
   if (allProducts) {
