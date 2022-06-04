@@ -85,6 +85,14 @@ function getAllQuantity() {
   }
 }
 
+//
+function addProduct() {
+  // On récupère l'input de .itemQuantity dans une boucle
+
+}
+
+addProduct();
+
 // On récupère tous les éléments de la page par leur ID
 const btnSubmit = document.getElementById('order');
 const firstName = document.getElementById('firstName');
@@ -198,6 +206,7 @@ function checkEmail() {
   return true;
 }
 
+// Quand la personne va envoyer la commande via le formulaire
 function order() {
   const purchase = [];
   // eslint-disable-next-line no-restricted-syntax
@@ -231,6 +240,29 @@ function order() {
     .catch((error) => alert(error));
 }
 
+function deleteProduct() {
+  const deleteProductQuery = document.querySelectorAll('.cart__item .deleteItem');
+  deleteProductQuery.forEach((cartDelete) => {
+    console.log('click');
+    // eslint-disable-next-line consistent-return
+    cartDelete.addEventListener('click', () => {
+      // appel de la ressource du local storage
+      // eslint-disable-next-line no-underscore-dangle
+      for (let d = 0, c = allProducts.length; d < c; d++)
+        // eslint-disable-next-line no-underscore-dangle
+        if (allProducts[d]._id === cartDelete.dataset.id && allProducts[d].color === cartDelete.dataset.color) {
+          const num = [d];
+          const newCart = JSON.parse(localStorage.getItem('totalCart'));
+          newCart.splice(num, 1);
+          localStorage.allProducts = JSON.stringify(newCart);
+          getAllQuantity();
+          return document.location.reload();
+        }
+    });
+  });
+}
+
+deleteProduct();
 // Quand on clique sur le bouton 'commander'
 btnSubmit.addEventListener('click', () => {
   const isValidFirstName = checkFirstName();
