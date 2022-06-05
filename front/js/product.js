@@ -9,6 +9,7 @@ const baseUrl = 'http://localhost:3000/api/products';
 const errMessageInContent = document.querySelector('.item__content');
 
 function addProductToCart(newProduct) {
+  // Récupère le panier dans le localStorage
   let totalProductsCart = JSON.parse(localStorage.getItem('totalProductsCart'));
   const productCartWithSameId = totalProductsCart?.find(({ id }) => id === newProduct.id);
   const productCartWithSameColor = totalProductsCart?.find(({ color }) => color === newProduct.color);
@@ -51,7 +52,7 @@ function addProductToCart(newProduct) {
   }
 }
 
-function addItem(id, name, quantity, color) {
+function addItem(id, quantity, color) {
   // Créer un nouvel objet avec les données du produit
   const productToAdd = {
     id,
@@ -114,7 +115,7 @@ fetch(baseUrl).then((response) => response.json())
       if (colorsItem.value !== '') {
         if ((quantityItem.value >= 1) && (quantityItem.value <= 100)) {
           // eslint-disable-next-line no-underscore-dangle
-          addItem(product._id, product.name, quantity, color);
+          addItem(product._id, quantity, color);
         } else {
           alert('S\'il vous plait, entrez une quantité valide entre 1 et 100');
         }
