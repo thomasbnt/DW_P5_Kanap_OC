@@ -34,6 +34,7 @@ async function getAllProducts() {
         const responseData = await response.json();
         const totalPricePerProduct = product.quantity * responseData.price;
 
+        // On calcule le prix total des produits
         totalPrice += totalPricePerProduct;
         totalPriceSelector.innerHTML = totalPrice;
 
