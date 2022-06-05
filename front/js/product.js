@@ -123,6 +123,6 @@ fetch(baseUrl).then((response) => response.json())
         alert('S\'il vous plait, entrez une couleur');
       }
     });
-  }).catch(() => {
-  errMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
-});
+  }).catch((err) => {
+    errMessageInContent.innerHTML = `<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l'API. (Erreur : ${err.message})</p>`;
+  });
