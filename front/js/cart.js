@@ -242,22 +242,14 @@ function order() {
 
 function deleteProduct() {
   const deleteBtn = document.querySelectorAll('.deleteItem');
-  // eslint-disable-next-line no-restricted-syntax
-  for (const button of deleteBtn) {
-    const productDeleted = button.closest('.cart__item');
-    const productDeletedId = productDeleted.dataset.id;
-    const productDeletedColor = productDeleted.dataset.color;
 
-    button.addEventListener('click', () => {
-      console.log('click');
-      // eslint-disable-next-line max-len
-      const newTotal = allProducts.filter((p) => p.id !== productDeletedId || p.color !== productDeletedColor);
-      localStorage.setItem('totalProductsCart', JSON.stringify(newTotal));
-      productDeleted.remove();
-      getAllProducts();
-      getAllQuantity();
+  deleteBtn.forEach((product) => {
+    console.log('&');
+    product.addEventListener('click', (event) => {
+      console.log('click event listener');
+      event.preventDefault();
     });
-  }
+  });
 }
 
 deleteProduct();
