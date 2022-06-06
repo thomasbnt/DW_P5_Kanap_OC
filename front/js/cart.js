@@ -72,8 +72,8 @@ async function getAllProducts() {
   }
 }
 
-// Obtenir le total des quantités de la commande
-function getAllQuantity() {
+// Obtenir le total des quantités et du prix de la commande
+function getAllQuantityAndPrice() {
   const totalQuantity = document.querySelector('#totalQuantity');
   // On vérifie si le LS est vide
   if (!allProducts) {
@@ -268,4 +268,4 @@ btnSubmit.addEventListener('click', () => {
 });
 
 getAllProducts();
-getAllQuantity();
+getAllQuantityAndPrice();
