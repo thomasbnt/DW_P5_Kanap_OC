@@ -4,6 +4,8 @@ const orderUrl = `${baseUrl}products/order`;
 
 // Récupère le localstorage
 const allProducts = JSON.parse(localStorage.getItem('totalProductsCart'));
+// Initie le tableau des Promises
+const allPromises = [];
 
 // Obtenir tous les produits qui se trouvent dans le LS et l'afficher dans la commande
 async function getAllProducts() {
@@ -27,22 +29,24 @@ async function getAllProducts() {
   if (allProducts) {
     // Si le localstorage n'est pas vide, on retourne toutes les données du localstorage
     // avec une boucle et un createElement
-    allProducts.map(async (product) => {
-      const response = await fetch(`${productUrl}/${product.id}`);
-      if (response.ok) {
-        // On récupère depuis l'API les données de chaque produit
-        const responseData = await response.json();
-        const totalPricePerProduct = product.quantity * responseData.price;
+    allProducts.map((product) => {
+      // eslint-disable-next-line no-async-promise-executor
+      const promise = new Promise(async (resolve) => {
+        const response = await fetch(`${productUrl}/${product.id}`);
+        if (response.ok) {
+          // On récupère depuis l'API les données de chaque produit
+          const responseData = await response.json();
+          const totalPricePerProduct = product.quantity * responseData.price;
 
-        // On calcule le prix total des produits
-        totalPrice += totalPricePerProduct;
-        totalPriceSelector.innerHTML = totalPrice;
+          // On calcule le prix total des produits
+          totalPrice += totalPricePerProduct;
+          totalPriceSelector.innerHTML = totalPrice;
 
-        const productContainer = document.createElement('article');
-        productContainer.classList.add('cart__item');
-        productContainer.setAttribute('data-id', product.id);
-        productContainer.setAttribute('data-color', product.color);
-        productContainer.innerHTML = `
+          const productContainer = document.createElement('article');
+          productContainer.classList.add('cart__item');
+          productContainer.setAttribute('data-id', product.id);
+          productContainer.setAttribute('data-color', product.color);
+          productContainer.innerHTML = `
             <div class='cart__item__img'>
               <img src='${responseData.imageUrl}' alt='${responseData.altTxt}'>
             </div>
@@ -63,17 +67,20 @@ async function getAllProducts() {
               </div>
             </div>
       `;
-        // Ajoute la div créée au DOM
-        document.querySelector('#cart__items').appendChild(productContainer);
-      }
+          // Ajoute la div créée au DOM
+          document.querySelector('#cart__items').appendChild(productContainer);
+          resolve();
+        }
+      });
+      allPromises.push(promise);
     });
   } else {
     totalPriceSelector.innerHTML = '0';
   }
 }
 
-// Obtenir le total des quantités et du prix de la commande
-function getAllQuantityAndPrice() {
+// Obtenir le total des quantités
+function getAllQuantity() {
   const totalQuantity = document.querySelector('#totalQuantity');
   // On vérifie si le LS est vide
   if (!allProducts) {
@@ -243,17 +250,14 @@ function order() {
 
 function deleteProduct() {
   const deleteBtn = document.querySelectorAll('.deleteItem');
-
+  console.log(deleteBtn);
   deleteBtn.forEach((product) => {
-    console.log('&');
-    product.addEventListener('click', (event) => {
+    product.addEventListener('click', () => {
       console.log('click event listener');
-      event.preventDefault();
     });
   });
 }
 
-deleteProduct();
 // Quand on clique sur le bouton 'commander'
 btnSubmit.addEventListener('click', () => {
   const isValidFirstName = checkFirstName();
@@ -268,4 +272,8 @@ btnSubmit.addEventListener('click', () => {
 });
 
 getAllProducts();
-getAllQuantityAndPrice();
+Promise.all(allPromises).then(() => {
+  console.log({ allPromises });
+  getAllQuantity();
+  deleteProduct();
+});
