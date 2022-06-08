@@ -249,11 +249,23 @@ function order() {
 }
 
 function deleteProduct() {
-  const deleteBtn = document.querySelectorAll('.deleteItem');
-  console.log(deleteBtn);
-  deleteBtn.forEach((product) => {
-    product.addEventListener('click', () => {
-      console.log('click event listener');
+  const deleteItem = document.querySelectorAll('.deleteItem');
+
+  deleteItem.forEach((product) => {
+    product.addEventListener('click', (event) => {
+      const productElem = event.target.closest('article');
+
+      if (allProducts) {
+        const indexFind = allProducts.findIndex((savedProduct) => savedProduct.id === productElem.getAttribute('data-id') && savedProduct.color === productElem.getAttribute('data-color'));
+
+        allProducts.splice(indexFind, 1);
+        productElem.remove();
+        localStorage.setItem('totalProductsCart', JSON.stringify(allProducts));
+      }
+      if (product) {
+        getAllPrice();
+        getAllQuantity();
+      }
     });
   });
 }
