@@ -9,7 +9,6 @@ const allPromises = [];
 
 // Obtenir tous les produits qui se trouvent dans le LS et l'afficher dans la commande
 async function getAllProducts() {
-  let totalPrice = 0;
   // Si le localstorage est vide, on retourne un message disant que le panier est vide.
   if (allProducts === null) {
     const noProductsMessage = document.querySelector('#cart__items');
@@ -19,16 +18,15 @@ async function getAllProducts() {
     disableButton.disabled = true;
     // Mets le curseur en mode not-allowed sur le bouton de commande
     disableButton.style.cssText = 'cursor: not-allowed';
-    // Ajoute les valeurs 0 pour la quantité et pour le prix total
+    // Ajoute les valeurs 0 pour la quantité totale
     document.querySelector('#totalQuantity').innerHTML = '0';
-    document.querySelector('#totalPrice').innerHTML = '0';
   }
-  const totalPriceSelector = document.querySelector('#totalPrice');
 
   // On vérifie si le LS n'est pas vide pour éviter les erreurs
   if (allProducts) {
     // Si le localstorage n'est pas vide, on retourne toutes les données du localstorage
     // avec une boucle et un createElement
+    // eslint-disable-next-line array-callback-return
     allProducts.map((product) => {
       // eslint-disable-next-line no-async-promise-executor
       const promise = new Promise(async (resolve) => {
@@ -37,10 +35,6 @@ async function getAllProducts() {
           // On récupère depuis l'API les données de chaque produit
           const responseData = await response.json();
           const totalPricePerProduct = product.quantity * responseData.price;
-
-          // On calcule le prix total des produits
-          totalPrice += totalPricePerProduct;
-          totalPriceSelector.innerHTML = totalPrice;
 
           const productContainer = document.createElement('article');
           productContainer.classList.add('cart__item');
@@ -75,7 +69,7 @@ async function getAllProducts() {
       allPromises.push(promise);
     });
   } else {
-    totalPriceSelector.innerHTML = '0';
+    document.querySelector('#totalQuantity').innerHTML = '0';
   }
 }
 
@@ -91,6 +85,29 @@ function getAllQuantity() {
     // Additionne toutes les quantités de chaque produit dans calculTotalQuantity
     totalQuantity.innerHTML = allProducts.reduce((acc, cur) => acc + cur.quantity, 0);
   }
+}
+
+async function getAllPrice() {
+  const totalPriceSelector = document.querySelector('#totalPrice');
+  let totalPrice;
+  // eslint-disable-next-line array-callback-return
+  allProducts.map((product) => {
+    const res = fetch(`${productUrl}/${product.id}`);
+    console.log({ res });
+    if (res.ok) {
+      // On récupère depuis l'API les données de chaque produit
+      const responseData = res.json();
+      const totalPricePerProduct = product.quantity * responseData.price;
+      console.log({ totalPricePerProduct });
+
+      // On calcule le prix total des produits
+      totalPrice += totalPricePerProduct;
+      totalPriceSelector.innerHTML = totalPrice;
+      console.log({ totalPrice });
+    } else {
+      totalPriceSelector.innerHTML = '0';
+    }
+  });
 }
 
 //
@@ -288,5 +305,6 @@ getAllProducts();
 Promise.all(allPromises).then(() => {
   console.log({ allPromises });
   getAllQuantity();
+  getAllPrice();
   deleteProduct();
 });
