@@ -303,7 +303,6 @@ btnSubmit.addEventListener('click', () => {
 getAllProducts();
 // On attend avec une Promise que getAllProducts soit terminé avant de lancer les autres fonctions
 Promise.all(allPromises).then(() => {
-  console.log({ allPromises });
   getAllQuantity();
   getAllPrice();
   deleteProduct();
