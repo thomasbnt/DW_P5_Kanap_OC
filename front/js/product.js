@@ -12,6 +12,7 @@ function addProductToCart(newProduct) {
   // Récupère le panier dans le localStorage
   let totalProductsCart = JSON.parse(localStorage.getItem('totalProductsCart'));
   const productCartWithSameId = totalProductsCart?.find(({ id }) => id === newProduct.id);
+  // eslint-disable-next-line max-len
   const productCartWithSameColor = totalProductsCart?.find(({ color }) => color === newProduct.color);
 
   // Vérifie si le produit est déjà dans le panier avec la même couleur
@@ -30,6 +31,7 @@ function addProductToCart(newProduct) {
               totalProductsCart[index].quantity = 100;
             } else {
               // On additionne la quantité du produit déjà dans le panier avec la nouvelle quantité
+              // eslint-disable-next-line max-len
               totalProductsCart[index].quantity = productCartWithSameColor.quantity + newProduct.quantity;
             }
           }
