@@ -111,7 +111,8 @@ async function getAllPrice() {
 
 //
 function addProduct() {
-  // On récupère l'input de .itemQuantity dans une boucle
+  // Si le client modifie la quantité d'un produit, alors ça actualise le localstorage
+
 
 }
 
@@ -231,7 +232,6 @@ function checkEmail() {
 }
 
 // Quand la personne va envoyer la commande via le formulaire
-function order() {
 async function order() {
   const purchase = [];
   // eslint-disable-next-line no-restricted-syntax
@@ -276,7 +276,6 @@ function deleteProduct() {
         // On recherche par ID et couleur le produit à supprimer en comparant avec les
         // attribues du produit cliqué data-id et data-color.
         const indexFind = allProducts.findIndex((savedProduct) => savedProduct.id === productElem.getAttribute('data-id') && savedProduct.color === productElem.getAttribute('data-color'));
-
         allProducts.splice(indexFind, 1);
         productElem.remove();
         localStorage.setItem('totalProductsCart', JSON.stringify(allProducts));
