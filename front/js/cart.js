@@ -275,8 +275,11 @@ function deleteProduct() {
       if (allProducts) {
         // On recherche par ID et couleur le produit à supprimer en comparant avec les
         // attribues du produit cliqué data-id et data-color.
-        const indexFind = allProducts.findIndex((savedProduct) => savedProduct.id === productElem.getAttribute('data-id') && savedProduct.color === productElem.getAttribute('data-color'));
-        allProducts.splice(indexFind, 1);
+        const elemProduct = productElem.getAttribute('data-id');
+        const elemColor = productElem.getAttribute('data-color');
+        // eslint-disable-next-line max-len
+        const indexSearch = allProducts.findIndex((searchProduct) => searchProduct.id === elemProduct && searchProduct.color === elemColor);
+        allProducts.splice(indexSearch, 1);
         productElem.remove();
         localStorage.setItem('totalProductsCart', JSON.stringify(allProducts));
       }
