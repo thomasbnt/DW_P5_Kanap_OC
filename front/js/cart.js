@@ -232,6 +232,7 @@ function checkEmail() {
 
 // Quand la personne va envoyer la commande via le formulaire
 function order() {
+async function order() {
   const purchase = [];
   // eslint-disable-next-line no-restricted-syntax
   for (const allPurchase of allProducts) {
