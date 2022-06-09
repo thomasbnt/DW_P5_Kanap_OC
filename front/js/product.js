@@ -63,7 +63,8 @@ function addItem(id, quantity, color) {
   addProductToCart(productToAdd);
 }
 
-fetch(baseUrl).then((response) => response.json())
+fetch(baseUrl)
+  .then((response) => response.json())
   .then((products) => {
     // Sélectionne le contenu de la page avec searchParams avec l'id du produit
     const url = new URL(window.location.href);
@@ -124,5 +125,9 @@ fetch(baseUrl).then((response) => response.json())
       }
     });
   }).catch((err) => {
-    errMessageInContent.innerHTML = `<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l'API. (Erreur : ${err.message})</p>`;
+    if (err.message === 'Failed to fetch') {
+      errMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
+    } else {
+      errMessageInContent.innerHTML = '<h1>Erreur 404</h1><p>Le produit n\'exist pas ou la page a été supprimée.</p>';
+    }
   });
