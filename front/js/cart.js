@@ -104,11 +104,14 @@ async function getAllPrice() {
         // On calcule le prix total des produits
         totalPrice += totalPricePerProduct;
       } else {
+        // Si la requête n'est pas ok, on affiche un total de 0€
         totalPriceSelector.innerHTML = '0';
       }
       totalPriceSelector.innerHTML = totalPrice;
     });
   }
+  // Si le panier est vide, alors on affiche 0€
+  totalPriceSelector.innerHTML = '0';
 }
 
 // Function ajoutant et supprimant un produit du panier
