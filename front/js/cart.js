@@ -266,18 +266,21 @@ function order() {
 
 function deleteProduct() {
   const deleteItem = document.querySelectorAll('.deleteItem');
-
+  // On met en place pour chaque produit dans le panier, un event au click sur le bouton Supprimer
   deleteItem.forEach((product) => {
     product.addEventListener('click', (event) => {
       const productElem = event.target.closest('article');
-
+      // On vérifie si le panier n'est pas vide
       if (allProducts) {
+        // On recherche par ID et couleur le produit à supprimer en comparant avec les
+        // attribues du produit cliqué data-id et data-color.
         const indexFind = allProducts.findIndex((savedProduct) => savedProduct.id === productElem.getAttribute('data-id') && savedProduct.color === productElem.getAttribute('data-color'));
 
         allProducts.splice(indexFind, 1);
         productElem.remove();
         localStorage.setItem('totalProductsCart', JSON.stringify(allProducts));
       }
+      // S'il trouve le produit selectionné, on actualise le prix et la quantité totale du LS.
       if (product) {
         getAllPrice();
         getAllQuantity();
@@ -287,7 +290,13 @@ function deleteProduct() {
 }
 
 // Quand on clique sur le bouton 'commander'
-btnSubmit.addEventListener('click', () => {
+btnSubmit.addEventListener('click', (event) => {
+  // Ajout preventDefault pour empêcher le rechargement de la page
+  // quand l'évènement n'est pas explicitement géré.
+  // https://stackoverflow.com/questions/56892082/how-to-fix-typeerror-failed-to-fetch
+  // https://developer.mozilla.org/fr/docs/web/api/event/preventdefault
+  event.preventDefault();
+  // On met toutes les functions dans chaque variable pour avoir un résultat en bool
   const isValidFirstName = checkFirstName();
   const isValidLastName = checkLastName();
   const isValidAddress = checkAddress();
