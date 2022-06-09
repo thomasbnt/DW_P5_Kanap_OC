@@ -48,7 +48,7 @@ async function getAllProducts() {
               <div class='cart__item__content__description'>
                 <h2>${responseData.name}</h2>
                 <p>${product.color}</p>
-                <p>${totalPricePerProduct} €</p>
+                <p id='totalPricePerProduct'>${totalPricePerProduct} €</p>
               </div>
               <div class='cart__item__content__settings'>
                 <div class='cart__item__content__settings__quantity'>
@@ -98,6 +98,8 @@ async function getAllPrice() {
         // On récupère depuis l'API les données de chaque produit
         const responseData = await res.json();
         const totalPricePerProduct = product.quantity * responseData.price;
+        // On met à jour le total du prix du produit modifié
+        document.getElementById('totalPricePerProduct').innerHTML = `${totalPricePerProduct} €`;
 
         // On calcule le prix total des produits
         totalPrice += totalPricePerProduct;
