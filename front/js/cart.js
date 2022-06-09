@@ -89,25 +89,24 @@ function getAllQuantity() {
 
 async function getAllPrice() {
   const totalPriceSelector = document.querySelector('#totalPrice');
-  let totalPrice;
+  let totalPrice = 0;
   // eslint-disable-next-line array-callback-return
-  allProducts.map((product) => {
-    const res = fetch(`${productUrl}/${product.id}`);
-    console.log({ res });
-    if (res.ok) {
-      // On récupère depuis l'API les données de chaque produit
-      const responseData = res.json();
-      const totalPricePerProduct = product.quantity * responseData.price;
-      console.log({ totalPricePerProduct });
+  if (allProducts) {
+    allProducts.map(async (product) => {
+      const res = await fetch(`${productUrl}/${product.id}`);
+      if (res.ok) {
+        // On récupère depuis l'API les données de chaque produit
+        const responseData = await res.json();
+        const totalPricePerProduct = product.quantity * responseData.price;
 
-      // On calcule le prix total des produits
-      totalPrice += totalPricePerProduct;
+        // On calcule le prix total des produits
+        totalPrice += totalPricePerProduct;
+      } else {
+        totalPriceSelector.innerHTML = '0';
+      }
       totalPriceSelector.innerHTML = totalPrice;
-      console.log({ totalPrice });
-    } else {
-      totalPriceSelector.innerHTML = '0';
-    }
-  });
+    });
+  }
 }
 
 //
