@@ -111,14 +111,35 @@ async function getAllPrice() {
   }
 }
 
-//
-function addProduct() {
+// Function ajoutant et supprimant un produit du panier
+function addRemoveProduct() {
   // Si le client modifie la quantité d'un produit, alors ça actualise le localstorage
+  const addArticleInCart = document.querySelectorAll('.cart__item__content__settings__quantity');
 
+  addArticleInCart.forEach((product) => {
+    product.addEventListener('change', (event) => {
+      event.preventDefault();
+      const elemProduct = event.target.closest('article');
 
+      if (allProducts) {
+        const elemProductId = elemProduct.getAttribute('data-id');
+        const elemProductColor = elemProduct.getAttribute('data-color');
+        // eslint-disable-next-line max-len
+        const indexFind = allProducts.findIndex((savedProduct) => savedProduct.id === elemProductId && savedProduct.color === elemProductColor);
+
+        // On vérifie si la quantité est comprise entre 1 et 100
+        if (parseInt(event.target.value, 10) > 0 && parseInt(event.target.value, 10) <= 100) {
+          allProducts[indexFind].quantity = parseInt(event.target.value, 10);
+          localStorage.setItem('totalProductsCart', JSON.stringify(allProducts));
+        }
+        if (product) {
+          getAllQuantity();
+          getAllPrice();
+        }
+      }
+    });
+  });
 }
-
-addProduct();
 
 // On récupère tous les éléments de la page par leur ID
 const btnSubmit = document.getElementById('order');
@@ -319,4 +340,5 @@ Promise.all(allPromises).then(() => {
   getAllQuantity();
   getAllPrice();
   deleteProduct();
+  addRemoveProduct();
 });
