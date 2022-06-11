@@ -2,10 +2,13 @@ const baseUrl = 'http://localhost:3000/api/';
 const productUrl = `${baseUrl}products`;
 const productList = document.querySelector('#items');
 
+// On récupère les données du produit depuis l'API
 fetch(productUrl)
   .then((response) => response.json())
   .then((data) => {
+    // eslint-disable-next-line no-restricted-syntax
     for (const d of data) {
+      // On crée un nouvel élément HTML avec la balise <a>
       const product = document.createElement('a');
       // eslint-disable-next-line no-underscore-dangle
       product.href = `./product.html?id=${d._id}`;

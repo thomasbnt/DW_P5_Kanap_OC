@@ -8,6 +8,7 @@ const baseUrl = 'http://localhost:3000/api/products';
 // s'il n'y a pas de produit ou que l'API est indisponible
 const errMessageInContent = document.querySelector('.item__content');
 
+// Ajout/supp depuis la value input du produit côté HTML
 function addProductToCart(newProduct) {
   // Récupère le panier dans le localStorage
   let totalProductsCart = JSON.parse(localStorage.getItem('totalProductsCart'));
@@ -54,6 +55,7 @@ function addProductToCart(newProduct) {
   }
 }
 
+// Ajout d'un produit au panier
 function addItem(id, quantity, color) {
   // Créer un nouvel objet avec les données du produit
   const productToAdd = {
@@ -65,6 +67,7 @@ function addItem(id, quantity, color) {
   addProductToCart(productToAdd);
 }
 
+// On récupère le produit et on vérifie s'il existe avec son ID dans un premier temps
 fetch(baseUrl)
   .then((response) => response.json())
   .then((products) => {

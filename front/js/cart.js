@@ -87,6 +87,8 @@ function getAllQuantity() {
   }
 }
 
+// Obtenir le prix total du panier et l'afficher dans le DOM,
+// et s'actualise quand un produit est ajouté ou supprimé ainsi que quand la quantité est modifiée
 async function getAllPrice() {
   const totalPriceSelector = document.querySelector('#totalPrice');
   let totalPrice = 0;
