@@ -133,6 +133,6 @@ fetch(baseUrl)
     if (err.message === 'Failed to fetch') {
       errMessageInContent.innerHTML = '<h1>Erreur 503</h1><p>Impossible de récupérer les articles depuis l\'API.</p>';
     } else {
-      errMessageInContent.innerHTML = '<h1>Erreur 404</h1><p>Le produit n\'exist pas ou la page a été supprimée.</p>';
+      errMessageInContent.innerHTML = '<h1>Erreur 404</h1><p>Le produit n\'existe pas ou la page a été supprimée.</p>';
     }
   });
