@@ -10,7 +10,7 @@ const allPromises = [];
 // Obtenir tous les produits qui se trouvent dans le LS et l'afficher dans la commande
 async function getAllProducts() {
   // Si le localstorage est vide, on retourne un message disant que le panier est vide.
-  if (allProducts === null) {
+  if (allProducts === null || allProducts.length === 0) {
     const noProductsMessage = document.querySelector('#cart__items');
     noProductsMessage.innerHTML = '<h2>Votre panier est vide</h2>';
     const disableButton = document.querySelector('#order');
