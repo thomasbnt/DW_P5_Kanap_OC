@@ -259,6 +259,14 @@ function checkEmail() {
   return true;
 }
 
+function checkProducts() {
+  if (allProducts.length <= 0) {
+    alert('Aucun produit dans le panier');
+    return false;
+  }
+  return true;
+}
+
 // Quand la personne va envoyer la commande via le formulaire
 async function order() {
   const purchase = [];
@@ -333,8 +341,9 @@ btnSubmit.addEventListener('click', (event) => {
   const isValidAddress = checkAddress();
   const isValidCity = checkCity();
   const isValidEmail = checkEmail();
+  const isValidProducts = checkProducts();
 
-  if (isValidFirstName && isValidLastName && isValidAddress && isValidCity && isValidEmail) {
+  if (isValidFirstName && isValidLastName && isValidAddress && isValidCity && isValidEmail && isValidProducts) {
     order();
   }
 });
