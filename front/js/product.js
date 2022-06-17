@@ -122,6 +122,7 @@ fetch(baseUrl)
         if ((quantityItem.value >= 1) && (quantityItem.value <= 100)) {
           // eslint-disable-next-line no-underscore-dangle
           addItem(product._id, quantity, color);
+          alert('Le produit a été ajouté au panier');
         } else {
           alert('S\'il vous plait, entrez une quantité valide entre 1 et 100');
         }
